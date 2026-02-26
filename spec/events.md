@@ -161,8 +161,3 @@ Real-time streaming triggers
 External event bus integration
 
 Event replay and recovery mechanisms
----
-
-När du har committat detta är OAP officiellt på v0.2-nivå arkitektoniskt.
-
-Skriv “klart” när det är inne så går vi vidare till permission risk model (det kommer göra projektet ännu mer seriöst).
