@@ -1,47 +1,73 @@
-OAP Event & Trigger Model (Draft v0.2)
-1. Purpose
+# OAP Event & Trigger Model (Draft v0.2)
+
+## 1. Purpose
 
 This document defines how OAP-compliant agents are triggered and executed.
 
-The objective is to standardize agent activation behavior across runtimes.
+The goal is to standardize activation behavior across runtimes and ensure predictable, auditable execution flows.
 
-2. Trigger Types
+---
+
+## 2. Trigger Categories
 
 An OAP agent MAY declare one or more of the following trigger types:
 
-Manual
-
-Scheduled
-
-Event-Based
+- Manual
+- Scheduled
+- Event-Based
 
 If no trigger is declared, manual invocation is assumed.
 
-3. Manual Trigger
+---
 
-Manual triggers allow users to explicitly invoke the agent.
+## 3. Manifest Structure
 
-Manifest example:
+Triggers MUST be declared inside the agent manifest:
 
+```
+{
+  "triggers": {
+    "manual": true,
+    "scheduled": [],
+    "events": []
+  }
+}
+```
+
+Each trigger type is defined below.
+
+---
+
+## 4. Manual Trigger
+
+Manual triggers allow explicit user invocation.
+
+Example:
+
+```
 {
   "triggers": {
     "manual": true
   }
 }
-Runtime Requirements
+```
 
-Must allow explicit user invocation
+### Runtime Requirements
 
-Must log manual executions
+- Must allow explicit user invocation
+- Must log manual executions
+- Must inject execution metadata
+- Must enforce permission checks
 
-Must inject execution metadata
+---
 
-4. Scheduled Trigger
+## 5. Scheduled Trigger
 
-Scheduled triggers allow agents to execute on a defined schedule.
+Scheduled triggers allow agents to execute at defined intervals.
 
-Manifest example:
+Example:
 
+```
 {
   "triggers": {
     "scheduled": [
@@ -53,22 +79,34 @@ Manifest example:
     ]
   }
 }
-Runtime Requirements
+```
 
-Must allow users to modify schedules
+### Required Fields
 
-Must allow disabling schedules
+- id
+- cron
 
-Must log scheduled executions
+### Optional Fields
 
-Must inject trigger metadata
+- description
 
-5. Event-Based Trigger
+### Runtime Requirements
 
-Event triggers allow agents to react to system or external events.
+- Must allow user modification of schedule
+- Must allow disabling schedules
+- Must log scheduled executions
+- Must inject trigger metadata
+- Must enforce background execution permission
 
-Manifest example:
+---
 
+## 6. Event-Based Trigger
+
+Event triggers allow agents to respond to external or system-generated events.
+
+Example:
+
+```
 {
   "triggers": {
     "events": [
@@ -83,44 +121,51 @@ Manifest example:
     ]
   }
 }
-Required Fields
+```
 
-Each event trigger MUST define:
+### Required Fields
 
-id
+- id
+- source
+- event_type
 
-source
+### Optional Fields
 
-event_type
+- filter
+- debounce
 
-Optional fields:
+### Runtime Responsibilities
 
-filter
+- Validate required permissions
+- Allow enabling/disabling individual triggers
+- Log event-driven executions
+- Enforce permission boundaries
 
-debounce
+---
 
-Runtime Responsibilities
-
-Validate required permissions
-
-Allow trigger enable/disable
-
-Log event-driven executions
-
-Enforce permission boundaries
-
-6. Background Execution Permission
+## 7. Background Execution
 
 Agents declaring scheduled or event triggers implicitly require:
 
+```
 "system.background_execution"
+```
 
-Runtimes SHOULD require explicit user consent for background execution.
+Runtimes MUST:
 
-7. Execution Metadata Injection
+- Explicitly request user consent
+- Clearly indicate background behavior
+- Allow users to revoke background execution
 
-During execution, the runtime MUST inject metadata:
+---
 
+## 8. Execution Metadata Injection
+
+During execution, runtimes MUST inject structured metadata into the agent context.
+
+Example:
+
+```
 {
   "execution_context": {
     "trigger_type": "manual | scheduled | event",
@@ -128,37 +173,37 @@ During execution, the runtime MUST inject metadata:
     "timestamp": "<ISO8601 timestamp>"
   }
 }
+```
 
-This ensures traceability and auditability.
+This ensures:
 
-8. Logging Requirements
+- Deterministic behavior
+- Traceability
+- Auditability
+
+---
+
+## 9. Logging Requirements
 
 OAP-compliant runtimes SHOULD log:
 
-Execution ID
+- Execution ID
+- Agent ID
+- Trigger type
+- Trigger ID
+- Timestamp
+- Permissions used
+- Tools invoked
+- Success / Failure status
 
-Agent ID
+---
 
-Trigger type
-
-Trigger ID
-
-Timestamp
-
-Permissions used
-
-Tools invoked
-
-Success / Failure status
-
-9. Future Extensions
+## 10. Future Extensions
 
 Future versions MAY include:
 
-Cross-agent event propagation
-
-Webhook standardization
-
-Event replay mechanisms
-
-External event bus integration
+- Cross-agent event propagation
+- Webhook standardization
+- Real-time streaming triggers
+- External event bus integration
+- Event replay mechanisms
