@@ -1,120 +1,120 @@
 # Open Agent Protocol (OAP)
 
-Open Agent Protocol (OAP) is an open, vendor-neutral specification for defining, packaging, and running AI agents.
+**The open standard for portable AI agents.**
 
-OAP aims to establish a common foundation for agent manifests, permissions, tools, memory, and runtime compatibility — independent of model providers and platforms.
+Open Agent Protocol (OAP) defines a vendor-neutral way to package, distribute, and run AI agents across platforms, runtimes, and devices.
 
----
-
-## Why OAP?
-
-AI agents are rapidly evolving, but the ecosystem is fragmented.
-
-Today:
-- Agent definitions differ across platforms
-- Permissions are inconsistently structured
-- Tool integrations are platform-specific
-- Runtimes are not interoperable
-- Vendor lock-in is increasing
-
-There is no universal standard for AI agents.
-
-OAP exists to change that.
+OAP is not tied to any single model provider, company, device, or ecosystem.  
+It aims to become the universal distribution and interoperability layer for AI agents.
 
 ---
 
-## Goals
+## 🎯 Vision
 
-- Enable agent portability across runtimes
-- Reduce vendor lock-in
-- Standardize permission declaration and enforcement
-- Define a consistent manifest structure
-- Provide runtime compliance guidelines
-- Support long-term interoperability
+AI agents should be:
 
-Build once. Run anywhere.
+- Portable across runtimes
+- Explicit about permissions
+- Safe by default
+- Vendor-neutral
+- Easy to distribute
 
----
-
-## Core Components
-
-OAP v0.1 defines:
-
-- **Manifest Specification**  
-  Standardized `manifest.json` structure
-
-- **Permission Taxonomy**  
-  Unified, structured permission model
-
-- **Runtime Compliance Requirements**  
-  Minimum requirements for OAP-compatible runtimes
-
-- **Tool Interface Specification**  
-  How agents declare and access external tools
-
-- **Memory Declaration Model**  
-  How agents define memory scope and retention
-
-See `/spec` for detailed documentation.
+OAP standardizes how agents are described, packaged, validated, installed, and executed.
 
 ---
 
-## Current Status
+## 📦 What OAP Defines
 
-OAP v0.1 — Draft Specification
+OAP is a protocol specification consisting of:
 
-This is an early-stage open initiative.
-The specification is evolving and open for feedback.
+### 1. Agent Package Format (`.oap`)
+A portable ZIP-based archive containing:
+- `manifest.json`
+- optional resources
+- optional metadata
 
----
+### 2. Agent Manifest
+Defines:
+- agent identity
+- version
+- permissions
+- required tools
+- compatibility constraints
 
-## Repository Structure
-/spec
-manifest.md
-permissions.md
-runtime.md
-tools.md
-memory.md
+### 3. Permissions Model
+Agents must explicitly declare required permissions.
+Runtimes must prompt users and enforce access.
 
-/examples
-daily-planner-agent
-finance-agent
+### 4. Tool Allowlisting
+Agents can only call tools declared in their manifest.
+Runtimes must enforce tool access.
 
-MANIFESTO.md
-roadmap.md
-CONTRIBUTING.md
-
----
-
-## Contributing
-
-Contributions are welcome.
-
-You can:
-- Propose improvements via Pull Requests
-- Open issues for discussion
-- Add example agents
-- Suggest improvements to the permission model
-- Help refine runtime compliance
-
-See `CONTRIBUTING.md` for details.
+### 5. Registry Model
+Defines how agents can be:
+- published
+- discovered
+- installed
+- versioned
 
 ---
 
-## Long-Term Vision
+## 📚 Specifications
 
-OAP aims to become a foundational standard for AI agents,
-similar to how HTTP enabled the web.
+All canonical specifications live in the `/spec` directory:
 
-The goal is a future where:
+- `spec/oap-v0.2.md` — Core protocol specification (Draft)
 
-- Agents are portable
-- Runtimes are interoperable
-- Permissions are transparent
-- Ecosystems are open
+Future specs may include:
+- Registry specification
+- Package signing & trust model
+- Governance model
+- Security guidelines
 
 ---
 
-## License
+## 🧪 Reference Implementation
 
-Apache 2.0
+This repository defines the protocol.
+
+A working reference runtime + CLI lives here:
+
+👉 https://github.com/open-agent-protocol-org/oap-reference-runtime
+
+The reference implementation includes:
+- CLI tooling (`oap ...`)
+- runtime enforcement
+- packaging system
+- local registry
+- audit logging
+- example agents
+
+---
+
+## 🚧 Status
+
+- Protocol maturity: Draft
+- Current version: v0.2
+- Breaking changes possible before v1.0
+- Goal: stabilize specification toward v1.0
+
+---
+
+## 🤝 Contributing
+
+OAP is an open protocol initiative.
+
+You can contribute by:
+- Proposing spec improvements
+- Submitting clarifications
+- Improving the registry model
+- Building compatible runtimes
+- Reviewing security models
+
+Formal governance will be defined as the ecosystem grows.
+
+---
+
+## 🛡 License
+
+Licensed under the Apache License 2.0.  
+See the LICENSE file for details.
