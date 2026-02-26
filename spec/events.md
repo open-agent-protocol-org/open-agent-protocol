@@ -1,32 +1,31 @@
-# OAP Event & Trigger Model (v0.2 Draft)
+OAP Event & Trigger Model (v0.2 Draft)
 
 This document defines how OAP agents are triggered and executed.
 
 Agents should not be limited to manual invocation.
 They must support structured trigger models.
 
----
-
-## Trigger Categories
+Trigger Categories
 
 OAP defines three primary trigger types:
 
-1. Manual
-2. Scheduled
-3. Event-based
+Manual
 
----
+Scheduled
 
-## 1. Manual Trigger
+Event-based
+
+1. Manual Trigger
 
 The agent runs when explicitly invoked by a user.
 
 Example:
 
-```json
 "triggers": {
   "manual": true
-}Manual triggers are required for all agents unless explicitly designed as background-only agents.
+}
+
+Manual triggers are required for all agents unless explicitly designed as background-only agents.
 
 Runtime requirements:
 
@@ -40,7 +39,9 @@ Must inject execution metadata
 
 Agents may declare scheduled executions using cron syntax.
 
-Example:"triggers": {
+Example:
+
+"triggers": {
   "scheduled": [
     {
       "id": "daily_summary",
@@ -48,7 +49,9 @@ Example:"triggers": {
       "description": "Runs every day at 07:00"
     }
   ]
-}Runtime Requirements:
+}
+
+Runtime Requirements:
 
 Must allow user modification of schedule
 
@@ -62,7 +65,9 @@ Must inject trigger metadata into execution context
 
 Agents may respond to external system events.
 
-Example:"triggers": {
+Example:
+
+"triggers": {
   "events": [
     {
       "id": "new_email",
@@ -73,7 +78,9 @@ Example:"triggers": {
       }
     }
   ]
-}Runtime Responsibilities:
+}
+
+Runtime Responsibilities:
 
 Validate permissions required for event source
 
@@ -97,7 +104,9 @@ filter (object, optional)
 
 debounce (object, optional)
 
-Example structure:{
+Example structure:
+
+{
   "id": "new_email",
   "source": "email",
   "event_type": "message.received",
@@ -107,22 +116,30 @@ Example structure:{
   "debounce": {
     "window_seconds": 30
   }
-}Background Execution
+}
+Background Execution
 
-If an agent declares scheduled or event triggers, it implicitly requests:"permissions": ["system.background_execution"]
+If an agent declares scheduled or event triggers, it implicitly requests:
+
+"permissions": ["system.background_execution"]
+
 High-risk background agents must require explicit user consent.
 
 Trigger Metadata Injection
 
 At execution time, the runtime must inject metadata into the agent context.
 
-Example:{
+Example:
+
+{
   "execution_context": {
     "trigger_type": "scheduled",
     "trigger_id": "daily_summary",
     "timestamp": "2026-02-26T07:00:00Z"
   }
-}This ensures:
+}
+
+This ensures:
 
 Deterministic execution
 
