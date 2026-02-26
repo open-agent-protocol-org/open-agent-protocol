@@ -1,126 +1,117 @@
-OAP Permission Risk Model (Draft v0.2)
-1. Purpose
+# OAP Permission Risk Model (Draft v0.2)
+
+## 1. Purpose
 
 This document defines standardized risk levels for OAP permissions.
 
-The objective is to ensure consistent security enforcement and user transparency across runtimes.
+The objective is to ensure consistent security enforcement, predictable runtime behavior, and clear user transparency across OAP-compliant environments.
 
-2. Risk Levels
+---
 
-OAP defines three permission risk levels:
+## 2. Risk Classification Overview
 
-Low
+Each OAP permission MUST be classified into one of the following risk levels:
 
-Medium
+- Low
+- Medium
+- High
 
-High
+Runtimes MUST enforce behavior according to the declared risk level.
 
-Each declared permission MUST be classified into one of these categories.
+---
 
-3. Low Risk Permissions
+## 3. Low Risk Permissions
 
-Low-risk permissions provide read-only or non-sensitive access.
+Low-risk permissions provide limited or read-only access with minimal potential impact.
 
-Examples:
+### Examples
 
-calendar.read
+- calendar.read  
+- notifications.send  
+- web.browse  
+- system.metadata.read  
 
-notifications.send
+### Runtime Requirements
 
-web.browse (read-only)
+- Single confirmation during installation  
+- No contextual re-confirmation required  
+- Must appear in permission overview  
+- Revocation must be supported  
 
-system.metadata.read
+---
 
-Runtime Requirements:
+## 4. Medium Risk Permissions
 
-Single confirmation at installation
+Medium-risk permissions allow modification of user data but are generally reversible.
 
-No re-confirmation required unless scope changes
+### Examples
 
-Must be visible in permission overview
+- calendar.write  
+- files.write  
+- email.read  
+- profile.update  
 
-4. Medium Risk Permissions
+### Runtime Requirements
 
-Medium-risk permissions allow modification of user data but are reversible.
+- Explicit confirmation during installation  
+- Clear explanation of impact  
+- Usage SHOULD be logged  
+- User MUST be able to revoke permission  
+- Runtime SHOULD allow visibility into permission usage  
 
-Examples:
+---
 
-calendar.write
+## 5. High Risk Permissions
 
-files.write
+High-risk permissions allow sensitive, irreversible, or financial actions.
 
-email.read
+### Examples
 
-profile.update
+- ecommerce.order  
+- email.send  
+- system.background_execution  
+- financial.transfer  
+- account.delete  
 
-Runtime Requirements:
+### Runtime Requirements
 
-Explicit confirmation at installation
+- Explicit confirmation during installation  
+- Contextual confirmation at first use  
+- Runtime SHOULD allow per-action confirmation  
+- Mandatory logging of usage  
+- Strong recommendation for additional safeguards (e.g., multi-factor confirmation)
 
-Must be displayed clearly with description
+---
 
-Runtime SHOULD log each usage instance
+## 6. Permission Escalation Rules
 
-User MUST be able to revoke permission
+When an agent introduces new permissions in an update:
 
-5. High Risk Permissions
+- The runtime MUST re-prompt the user  
+- High-risk permissions MUST require explicit opt-in  
+- Silent permission upgrades are prohibited  
+- Version changes introducing new permissions MUST be logged  
 
-High-risk permissions allow irreversible, sensitive, or financial actions.
+---
 
-Examples:
-
-ecommerce.order
-
-email.send
-
-system.background_execution
-
-financial.transfer
-
-account.delete
-
-Runtime Requirements:
-
-Explicit confirmation at installation
-
-Contextual confirmation at first usage
-
-Optional per-action confirmation
-
-Mandatory detailed logging
-
-Strong recommendation for multi-factor confirmation
-
-6. Permission Escalation Rules
-
-If an agent updates and introduces new permissions:
-
-Runtime MUST re-prompt user for approval
-
-High-risk additions MUST require explicit opt-in
-
-Silent permission upgrades are prohibited
-
-7. UI Guidelines (Non-Normative)
+## 7. Permission Transparency Guidelines (Non-Normative)
 
 Runtimes SHOULD:
 
-Display permissions grouped by risk level
+- Display permissions grouped by risk level  
+- Visually differentiate risk levels  
+- Provide clear human-readable explanations  
+- Allow simple permission revocation  
+- Allow users to inspect historical usage  
 
-Use visual indicators (color coding or badges)
+---
 
-Clearly explain why each permission is required
-
-Allow easy permission revocation
-
-8. Future Extensions
+## 8. Future Extensions
 
 Future versions MAY include:
 
-Fine-grained permission scopes
-
-Time-bound permissions
-
-Transaction-limited permissions
-
-Delegated permission models
+- Fine-grained permission scopes  
+- Time-limited permissions  
+- Transaction-limited permissions  
+- Delegated permissions  
+- Capability-based access control  
